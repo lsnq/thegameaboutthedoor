@@ -12,7 +12,7 @@ export class Level {
             'level-container__layer',
             'level-container__background',
             'level-' + number + '__layer-1');
-        loadSvg('/images/layer-' + number).then((data) => {
+        loadSvg('images/layer-' + number).then((data) => {
             this.background.innerHTML = data;
         });
 

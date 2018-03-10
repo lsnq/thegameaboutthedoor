@@ -81,7 +81,7 @@ svg {
 .logo {
     height: 50px;
     width: 130px;
-    background: url(/images/logo_1.svg) no-repeat 50% 50%;
+    background: url(../images/logo_1.svg) no-repeat 50% 50%;
     background-size: contain;
     left: 40px;
     top: 20px;
@@ -115,14 +115,14 @@ svg {
         width:50px;
         height: 50px;
         &-1 {
-            background-image:  url(/images/shape1.svg);
+            background-image:  url(../images/shape1.svg);
         }
         &-2 {
-            background-image:  url(/images/shape2.svg);
+            background-image:  url(../images/shape2.svg);
             margin-left: 1px;
         }
         &-3 {
-            background-image:  url(/images/shape3.svg);
+            background-image:  url(../images/shape3.svg);
         }
         &.achieved {
             opacity: 1;
@@ -237,7 +237,7 @@ svg {
         position: absolute;
         width: 100%;
         height: 90%;
-        background: url(/images/reward.svg) no-repeat 50% 80%;
+        background: url(../images/reward.svg) no-repeat 50% 80%;
         background-size: 75%;
         opacity: 0;
 
@@ -256,17 +256,17 @@ svg {
     }
     &.level-1 {
         .level-container__reward {
-            background-image: url(/images/reward.svg);
+            background-image: url(../images/reward.svg);
         }
     }
     &.level-2 {
         .level-container__reward {
-            background-image: url(/images/reward-2.svg);
+            background-image: url(../images/reward-2.svg);
         }
     }
     &.level-3 {
         .level-container__reward {
-            background-image: url(/images/reward-3.svg);
+            background-image: url(../images/reward-3.svg);
         }
     }
     &.level-scaled {
@@ -412,7 +412,7 @@ svg {
 }
 
 .final-reward {
-    background: url(/images/final-reward.svg) no-repeat 50% 50%;
+    background: url(../images/final-reward.svg) no-repeat 50% 50%;
     width: 250px;
     height: 70px;
     background-size: contain;

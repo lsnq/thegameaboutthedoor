@@ -227,7 +227,7 @@ class Level {
             'level-container__layer',
             'level-container__background',
             'level-' + number + '__layer-1');
-        Object(__WEBPACK_IMPORTED_MODULE_1__loadSvg__["c" /* default */])('/images/layer-' + number).then((data) => {
+        Object(__WEBPACK_IMPORTED_MODULE_1__loadSvg__["c" /* default */])('images/layer-' + number).then((data) => {
             this.background.innerHTML = data;
         });
 
