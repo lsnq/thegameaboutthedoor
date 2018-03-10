@@ -1,0 +1,438 @@
+html, body {
+    font-family: 'Helvetica', Arial, sans-serif;
+    margin: 0;
+    font-size: 14px;
+    padding: 10px;
+    box-sizing: border-box;
+    height: 100%;
+    overflow: hidden;
+}
+* {
+    -webkit-touch-callout: none;
+    user-select: none;
+}
+@keyframes twist {
+    25% {
+        transform: translate(-50%,-100%) scale(.8) rotate(-10deg);
+    }
+    50% {
+        transform: translate(-50%,-100%) scale(1) rotate(0deg);
+    }
+    75% {
+        transform: translate(-50%,-100%) scale(.8) rotate(10deg);
+    }
+}
+@keyframes shake {
+    10%, 90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%, 80% {
+        transform: translate3d(2px, 2px, 0);
+    }
+
+    30%, 50%, 70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%, 60% {
+        transform: translate3d(4px, -2px, 0);
+    }
+}
+
+@keyframes translateUp{
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-100%);
+    }
+}
+@keyframes rotateAndSomethingAnimation{
+    0% {
+        transform: rotate(0);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes opacityAnimation{
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(.65);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+svg {
+    * {
+        vector-effect: non-scaling-stroke;
+    }
+}
+
+
+.logo {
+    height: 50px;
+    width: 130px;
+    background: url(/images/logo_1.svg) no-repeat 50% 50%;
+    background-size: contain;
+    left: 40px;
+    top: 20px;
+    z-index: 2;
+}
+.rewards {
+    position: fixed;
+    top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    z-index: 2;
+    width: calc(100% - 30px);
+    left: 0;
+    padding: 1em;
+    box-sizing: border-box;
+    margin: 10px 15px;
+    .reward__container {
+        width: 50px;
+        height: 50px;
+    }
+    .reward {
+        background: transparent no-repeat 50% 50%;
+        background-size: cover;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.25s linear;
+
+        touch-action: none;
+        width:50px;
+        height: 50px;
+        &-1 {
+            background-image:  url(/images/shape1.svg);
+        }
+        &-2 {
+            background-image:  url(/images/shape2.svg);
+            margin-left: 1px;
+        }
+        &-3 {
+            background-image:  url(/images/shape3.svg);
+        }
+        &.achieved {
+            opacity: 1;
+            pointer-events: all;
+        }
+        &__touched {
+            transition: none;
+            z-index: 8;
+        }
+
+    }
+}
+
+#root {
+    min-width: 320px;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    &:after {
+        display: block;
+        content: '';
+        width: 100%;
+        height: 100%;
+        border: 10px solid black;
+        box-sizing: border-box;
+        pointer-events: none;
+        position: absolute;
+    }
+}
+
+.level-container {
+    position: absolute;
+    height: 100%;
+    top:0;
+    left:0;
+    width: 100%;
+    overflow: hidden;
+    touch-action: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    transition: transform .7s ease-in;
+    transform: translateY(100%);
+    transition-delay: 0.5s;
+    border-bottom: 10px solid black;
+    box-sizing: border-box;
+    &:first-child, .level-complete + &{
+        transform: translateY(0);
+    }
+
+    &__layer {
+        position: absolute;
+        width: 100%;
+        bottom: -10px;
+        left: 0;
+        svg {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    &__door {
+        text-align: center;
+        touch-action:none;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        width: 300px;
+        max-width: 85%;
+        left: 50%;
+        transform: translateX(-50%);
+        transform-origin: 50% 75%;
+        transition: 0.35s ease-out all;
+        overflow: hidden;
+        svg {
+            transition: 0.35s ease-out all;
+            transform: scale(1);
+        }
+        #inner-door {
+            transform: translateY(0);
+            transition: 0.35s ease-out all;
+            transition-delay: 0.5s;
+        }
+        &:after {
+            position: absolute;
+            display: block;
+            content: '';
+            width: 100%;
+            height: 100%;
+            border: 10px solid black;
+            pointer-events: none;
+            top:0;
+            left:0;
+            z-index: 5;
+            box-sizing: border-box;
+        }
+    }
+
+    &__background {
+        transition: 0.35s ease-out all;
+        transform: translateY(0);
+        transform-origin: 50% 0;
+        transition-delay: 0.5s;
+
+        svg {
+            transition: 0.35s ease-out all;
+            transform: scale(1);
+        }
+    }
+
+    &__reward {
+        position: absolute;
+        width: 100%;
+        height: 90%;
+        background: url(/images/reward.svg) no-repeat 50% 80%;
+        background-size: 75%;
+        opacity: 0;
+
+        transition: opacity 0.35s ease-out;
+        transition-delay: 1s;
+        &.show {
+            opacity: 1;
+            transform: translateY(-100%);
+        }
+        svg {
+            animation: rotateAndSomethingAnimation linear 30s;
+            animation-iteration-count: infinite;
+            transform-origin: 50% 50%;
+            width:80%;
+        }
+    }
+    &.level-1 {
+        .level-container__reward {
+            background-image: url(/images/reward.svg);
+        }
+    }
+    &.level-2 {
+        .level-container__reward {
+            background-image: url(/images/reward-2.svg);
+        }
+    }
+    &.level-3 {
+        .level-container__reward {
+            background-image: url(/images/reward-3.svg);
+        }
+    }
+    &.level-scaled {
+        .level-container__background {
+            transform: translateY(15%);
+        }
+        .level-container__door {
+            transform: translateX(-50%);
+            #inner-door {
+                transform: translateY(100%);
+            }
+        }
+    }
+    &.level-complete {
+        transform: translateY(-100%);
+        .level-container__background {
+            transform: translateY(100%);
+            transition: transform .7s ease-in;
+            transition-delay: 0.5s;
+        }
+    }
+}
+
+.locks {
+    position: absolute;
+    top:50%;
+    transform: translateY(-50%);
+    opacity: 1;
+    .level-scaled & {
+        transform: translateY(100%) rotate(180deg);
+        transition: all 1s ease-in 0.5s;
+        opacity: 0;
+    }
+    .level-3 & {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+        box-sizing: border-box;
+        flex-wrap: wrap;
+        text-shadow: 0 0 black;
+        margin: 40px 0;
+        background: white;
+        border: 10px solid black;
+
+    }
+}
+
+.lock {
+    touch-action: none;
+}
+.lock-swipe {
+    transition: transform 0.3s ease-in-out;
+    &__touched {
+        transition: none;
+    }
+    &__left {
+        .lock-swipe__container {
+            transform: rotate(180deg);
+            transform-origin: 50% 50%;
+        }
+    }
+    .arrow {
+        animation: opacityAnimation ease-in-out 1.5s;
+        animation-iteration-count: infinite;
+        transform-origin: 50% 50%;
+        @for $i from 1 through 4 {
+            &:nth-child(#{$i}) {
+                animation-delay: #{1/$i }s;
+            }
+        }
+    }
+}
+
+.lock-circle {
+    .circle {
+        position: absolute;
+        top:50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        transition: transform 0.5s linear;
+        display: flex;
+
+        &.circle-1 {
+            width: 90%;
+            height: 90%;
+        }
+        &.circle-2 {
+            width: 69%;
+            height: 69%;
+        }
+        &.circle-3 {
+            width: 40%;
+            height: 40%;
+        }
+
+    }
+
+    &.touched .circle {
+        transition: none;
+    }
+}
+
+.lock-touch {
+    width: 60px;
+    height: 60px;
+    background: white;
+    margin: 20px;
+    border-radius: 20px;
+    border: 10px solid;
+    box-sizing: border-box;
+    transition: all 0.15s linear;
+    &__touched {
+        background: red;
+        animation: shake 0.5s linear;
+        animation-iteration-count: infinite;
+    }
+    .level-scaled & {
+        background: white;
+        animation: none;
+    }
+}
+
+.chest {
+    width: 300px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,0);
+    .game-complete & {
+        #lock {
+            transform: translateY(25px);
+            transition: transform 0.25s ease-in;
+            transition-delay: 0.25s;
+        }
+        #undertop {
+            transform: translateY(100px);
+            transition: transform 0.25s ease-in;
+            transition-delay: 0.75s;
+        }
+
+
+    }
+}
+
+.final-reward {
+    background: url(/images/final-reward.svg) no-repeat 50% 50%;
+    width: 250px;
+    height: 70px;
+    background-size: contain;
+    transform: translate(-50%,-100%) scale(0);
+    left: 50%;
+    top: 50%;
+    position: absolute;
+    transition: all 0.5s ease-in-out;
+    transition-delay: 1s;
+    opacity: 0;
+    &.show {
+        opacity: 1;
+        transform: translate(-50%,-100%) scale(1);
+        animation: twist 2s linear;
+        animation-iteration-count: infinite;
+        animation-delay: 1.5s;
+    }
+}
+
+#reward-1-svg, #reward-2-2, #reward-3-svg {
+    stroke: none;
+    fill: #c6c8cc;
+}
