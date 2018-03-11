@@ -125,9 +125,9 @@ document.addEventListener('DOMContentLoaded', () => {
         levels[i] = new __WEBPACK_IMPORTED_MODULE_0__modules_level__["b" /* Level */](i, () => {
             document.querySelector('.reward-' + i).classList.add('achieved');
         });
-        levels[i].render(root);
+        //levels[i].render(root);
     }
-
+    levels[2].render(root);
     const bonusLevel = new __WEBPACK_IMPORTED_MODULE_0__modules_level__["a" /* BonusLevel */]();
     bonusLevel.render(root);
     document.querySelectorAll('.rewards .reward').forEach((el) => {
@@ -475,6 +475,7 @@ class LockCircle extends LockBase {
 
         this.circleNodes = [];
         this.points = {x: 0, y: 0};
+        this.currentQuad = {};
 
         for (let i = 0; i < 3; i++) {
             const node = document.createElement('div');
@@ -483,14 +484,28 @@ class LockCircle extends LockBase {
             node.setAttribute('touch-action', 'none');
             node.style.transform = this.transforms + 'rotate(' + this.rotation[i] + 'deg)';
             this.node.appendChild(node);
-
+            this.dist = 0;
+            this.oldAngle = 0;
             const rotate = (e) => {
-                this.dist = ((e.clientX - this.points.x) + (e.clientY - this.points.y)) / 3;
-                this.rotation[i] = this.dist + this.oldRotation[i];
+                const nodeRects = this.node.getBoundingClientRect();
+                const center = {
+                    x: nodeRects.x + nodeRects.width / 2,
+                    y: nodeRects.y + nodeRects.height / 2
+                };
+
+                const angle = Math.atan2(
+                    e.clientY - center.y,
+                    e.clientX - center.x
+                ) * 180 / Math.PI + 180;
+
+                this.dist = Math.abs(angle - this.oldAngle) < 30 ? angle - this.oldAngle : 0;
+                this.oldAngle = angle;
+                this.rotation[i] += this.dist;
+
                 this.rotation.forEach((el, index) => {
                     if (index !== i) {
-                        const coeff = ((i > index || index - i === 2) ? -1 : 1) * ((index + 1) / (i + 1) * 0.5);
-                        this.rotation[index] = this.dist * coeff + this.oldRotation[index];
+                        const coeff = ((i > index || index - i === 2) ? -1 : 1) * ((index + 1) / (i + 1) * 0.65);
+                        this.rotation[index] += this.dist * coeff;
                     }
                 });
 
@@ -500,6 +515,18 @@ class LockCircle extends LockBase {
             node.addEventListener('pointerdown', (e) => {
                 this.points = {x: e.clientX, y: e.clientY};
                 this.oldRotation = [...this.rotation];
+
+                const nodeRects = this.node.getBoundingClientRect();
+                const center = {
+                    x: nodeRects.x + nodeRects.width / 2,
+                    y: nodeRects.y + nodeRects.height / 2
+                };
+
+                this.oldAngle = Math.atan2(
+                    e.clientY - center.y,
+                    e.clientX - center.x
+                ) * 180 / Math.PI + 180;
+
                 node.addEventListener('pointermove', rotate);
                 this.node.classList.add('touched');
                 node.setPointerCapture(e.pointerId);

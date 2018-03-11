@@ -341,6 +341,20 @@ svg {
 }
 
 .lock-circle {
+    position: relative;
+    &:after {
+        display: block;
+        content: '';
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%,-175%) rotate(45deg);
+        border: 10px solid;
+        border-left: none;
+        border-top: none;
+    }
     .circle {
         position: absolute;
         top:50%;
