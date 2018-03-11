@@ -125,9 +125,8 @@ document.addEventListener('DOMContentLoaded', () => {
         levels[i] = new __WEBPACK_IMPORTED_MODULE_0__modules_level__["b" /* Level */](i, () => {
             document.querySelector('.reward-' + i).classList.add('achieved');
         });
-        //levels[i].render(root);
+        levels[i].render(root);
     }
-    levels[2].render(root);
     const bonusLevel = new __WEBPACK_IMPORTED_MODULE_0__modules_level__["a" /* BonusLevel */]();
     bonusLevel.render(root);
     document.querySelectorAll('.rewards .reward').forEach((el) => {
